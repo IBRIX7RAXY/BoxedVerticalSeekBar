@@ -1,29 +1,24 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
-
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 26
     buildToolsVersion '28.0.2'
+
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName '1.1'
 
-
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    productFlavors {
     }
 }
 
@@ -36,25 +31,14 @@ dependencies {
     })
 }
 
-group = 'abak.tr.com.boxedverticalseekbar'
-version = '1.0'
+publishing {
+    publications {
+        release(MavenPublication) {
+            from components.release
 
-task generateSourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier 'sources'
+            groupId = 'com.github.IBRIX7RAXY'
+            artifactId = 'BoxedVerticalSeekBar'
+            version = '1.1.1'
+        }
+    }
 }
-
-task generateJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath()
-            .join(File.pathSeparator))
-}
-
-task generateJavadocsJar(type: Jar) {
-    from generateJavadocs.destinationDir
-    classifier 'javadoc'
-}
-
-generateJavadocsJar.dependsOn generateJavadocs
-
-
